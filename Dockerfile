@@ -1411,6 +1411,12 @@ RUN \
 RUN \
   echo "export CARGO_MAKE_DISABLE_UPDATE_CHECK=1" >> .bashrc
 
+# In NSS 3.101, lib::pkix was enabled as the default X.509 validator.
+# This causes signature checking of secureboot artifacts to fail during build.
+# Temporarily revert to the previous verifier.
+RUN \
+  echo "export NSS_DISABLE_PKIX_VERIFY=1" >> /etc/bashrc
+
 # =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
 
 # Collect all builds for the SDK and squashes them into a final, single layer
